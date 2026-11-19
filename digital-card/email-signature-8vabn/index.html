@@ -302,5 +302,12 @@ $("f").addEventListener("submit",e=>e.preventDefault());
 render();
 </script>
 
+<script>(function(){
+function fmt(v){var d=v.replace(/\D/g,'');if(d.length===11&&d[0]==='1')d=d.slice(1);d=d.slice(0,10);
+ if(d.length<4)return d;if(d.length<7)return d.slice(0,3)+'-'+d.slice(3);return d.slice(0,3)+'-'+d.slice(3,6)+'-'+d.slice(6)}
+document.addEventListener('input',function(e){var t=e.target;if(!t||(t.id!=='cell'&&t.id!=='office'))return;
+ var atEnd=t.selectionStart===t.value.length,f=fmt(t.value);if(f!==t.value){t.value=f;if(atEnd)t.setSelectionRange(f.length,f.length)}},true);
+['cell','office'].forEach(function(id){var el=document.getElementById(id);if(el){el.setAttribute('inputmode','numeric');el.setAttribute('maxlength','12')}});
+})();</script>
 </body>
 </html>
