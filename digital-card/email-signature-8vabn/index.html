@@ -71,6 +71,12 @@ ol b{font-weight:600}
 .how .tip{list-style:none;margin-left:-20px;color:var(--muted);font-size:14px}
 .plain{display:block;white-space:pre-line;margin-top:6px;padding:10px 12px;border-radius:6px;background:var(--bg);font:14px/1.5 var(--body)}
 [hidden]{display:none!important}
+.field label .sub{font-weight:400;text-transform:none;letter-spacing:0;color:var(--muted);font-size:.92em}
+.x-sample{position:relative;-webkit-user-select:none;user-select:none}
+.x-mark{position:absolute;inset:0;z-index:2;pointer-events:none;display:flex;align-items:flex-start;justify-content:flex-end;padding:10px}
+.x-mark svg{position:absolute;inset:0;width:100%;height:100%}
+.x-mark line{stroke:#D93025;stroke-opacity:.55;stroke-width:3;vector-effect:non-scaling-stroke;stroke-linecap:round}
+.x-mark span{position:relative;background:#D93025;color:#fff;font:700 12px/1 var(--body,sans-serif);letter-spacing:.08em;text-transform:uppercase;padding:8px 12px;border-radius:999px;box-shadow:0 4px 12px rgba(0,0,0,.2)}
 </style>
 <style>body{margin:0}</style>
 </head>
@@ -91,7 +97,7 @@ ol b{font-weight:600}
       <div class="label">Your details</div>
       <div class="field"><label for="name">Full name</label><input id="name" type="text" maxlength="60" placeholder="Jane Smith"></div>
       <div class="field"><label for="title">Title</label><input id="title" type="text" maxlength="70" placeholder="Project Manager"></div>
-      <div class="field"><label for="company">Company</label>
+      <div class="field"><label for="company">Company <span class="sub">(select company or companies below)</span></label>
         <select id="company">
           <option value="ARE Telecommunications LLC &amp; ARE Contracting LLC">ARE Telecommunications LLC &amp; ARE Contracting LLC</option>
           <option value="ARE Telecommunications LLC">ARE Telecommunications LLC</option>
@@ -107,7 +113,7 @@ ol b{font-weight:600}
 
     <section class="panel">
       <div class="label">How it looks in an email</div>
-      <div class="canvas">
+      <div class="canvas x-sample"><div class="x-mark" aria-hidden="true"><svg viewBox="0 0 100 100" preserveAspectRatio="none"><line x1="2" y1="2" x2="98" y2="98"/><line x1="98" y1="2" x2="2" y2="98"/></svg><span>Sample only &middot; use the Copy signature button</span></div>
         <div class="mailbody" aria-label="Sample email">
           <p>John,</p>
           <p>Crews will be out Monday to begin work.</p>
