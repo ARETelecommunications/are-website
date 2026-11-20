@@ -13,6 +13,7 @@
 <meta name="apple-mobile-web-app-title" content="ARE Card">
 <meta name="are-build" content="fa564e1aa1">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;500&display=swap">
+<script>(function(){try{var q=/[?&]team\b/.test(location.search);if(q)localStorage.setItem('are-team','1');if(q||localStorage.getItem('are-team')==='1')document.documentElement.classList.add('are-team')}catch(e){if(/[?&]team\b/.test(location.search))document.documentElement.classList.add('are-team')}})();</script>
 <style>
 :root{--navy:#07183A;--navy-mid:#123A7A;--blue:#1565E0;--bright:#2E7BFF;--silver:#C9CED6;--surface:#F3F5F8;--ink:#111418;--muted:#59606B;--line:#DCE1E8;
 --display:"Roboto Condensed","Arial Narrow",Arial,sans-serif;--body:Roboto,"Segoe UI",Arial,sans-serif;color-scheme:light}
@@ -104,6 +105,18 @@ a:focus-visible,button:focus-visible{outline:3px solid var(--bright);outline-off
 .are-ptr.ready{background:#1565E0;border-color:#46BEFF}
 .are-ptr.spin svg{animation:areptr .8s linear infinite}
 @keyframes areptr{to{transform:rotate(360deg)}}
+.more{display:none}
+html.are-team .more{display:flex}
+.are-pick{position:fixed;inset:0;z-index:2147483002;background:rgba(7,24,58,.55);display:none;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px));-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+.are-pick.on{display:flex}
+.are-pick .box{width:100%;max-width:420px;background:#fff;border-radius:18px;padding:20px 18px 14px;box-shadow:0 20px 50px rgba(7,24,58,.4);border-top:4px solid var(--blue)}
+.are-pick h3{margin:0 0 4px;font:700 18px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--navy);text-align:center}
+.are-pick p{margin:0 0 14px;font-size:14px;color:var(--muted);text-align:center}
+.are-pick button{display:block;width:100%;margin:0 0 10px;padding:14px;border-radius:12px;border:0;font:700 16px var(--display);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;position:relative;overflow:hidden}
+.are-pick .p1{background:linear-gradient(180deg,#5B9BFF,#1565E0 55%,#0D4FB8);color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px rgba(21,101,224,.35)}
+.are-pick .p2{background:linear-gradient(180deg,rgba(32,64,128,.95),rgba(7,24,58,.95));color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.25),0 6px 16px rgba(7,24,58,.3)}
+.are-pick .p3{background:none;color:var(--muted);font-size:14px;margin:0;padding:10px}
+.are-pick small{display:block;font:400 12px var(--body,sans-serif);letter-spacing:0;text-transform:none;opacity:.8;margin-top:3px}
 </style>
 <style>
 .are-fab{position:fixed;right:16px;z-index:2147483000;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#fff;
@@ -258,6 +271,26 @@ addEventListener('touchstart',function(e){if(top0()){y0=e.touches[0].clientY;d=0
 addEventListener('touchmove',function(e){if(y0===null)return;d=e.touches[0].clientY-y0;if(d<=0){reset();return}
  var k=Math.min(d/120,1);el.style.opacity=String(k);el.style.transform='scale('+(0.6+0.4*k)+')';ic.style.transform='rotate('+Math.round(k*300)+'deg)';el.classList.toggle('ready',d>120)},{passive:true});
 addEventListener('touchend',function(){if(y0===null)return;if(d>120){el.style.opacity='1';el.style.transform='scale(1)';ic.style.transform='';el.classList.add('spin');fresh()}else reset();y0=null;d=0},{passive:true});
+})();</script>
+<div class="are-pick" role="dialog" aria-modal="true" aria-label="Share this card"><div class="box">
+<h3>Share this card</h3><p>Do you want to include the Team Contacts button?</p>
+<button type="button" class="p1" data-team="0">Card only<small>Just this card</small></button>
+<button type="button" class="p2" data-team="1">Card + Team Contacts<small>Adds the button to the ARE team list</small></button>
+<button type="button" class="p3">Cancel</button></div></div>
+<script>(function(){
+var BASE='https://www.aretelecomllc.com/digital-card/ashley-eaton-i4owp/',TITLE='Ashley Eaton | ARE',pk=document.querySelector('.are-pick'),msg=document.getElementById('msg');
+function toast(t){var m=document.querySelector('.are-ftoast');if(m){m.textContent=t;m.classList.add('on');setTimeout(function(){m.classList.remove('on')},2200)}if(msg)msg.textContent=t}
+function open(){pk.classList.add('on')}
+function close(){pk.classList.remove('on')}
+function go(team){var u=BASE+(team?'?team':'');close();
+ function copy(){var ok=team?'Link with Team Contacts copied':'Card link copied';
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){toast(ok)},legacy)}else legacy();
+  function legacy(){try{var t=document.createElement('textarea');t.value=u;t.setAttribute('readonly','');t.style.position='fixed';t.style.opacity='0';document.body.appendChild(t);t.select();t.setSelectionRange(0,u.length);var r=document.execCommand('copy');t.remove();toast(r?ok:u)}catch(e){toast(u)}}}
+ if(navigator.share){try{navigator.share({title:TITLE,url:u}).catch(function(e){if(!e||e.name!=='AbortError')copy()})}catch(e){copy()}return}
+ copy()}
+pk.addEventListener('click',function(e){var b=e.target.closest('button');if(!b){if(e.target===pk)close();return}if(b.classList.contains('p3'))return close();go(b.getAttribute('data-team')==='1')});
+['share'].map(function(id){return document.getElementById(id)}).concat([].slice.call(document.querySelectorAll('.are-fshare'))).forEach(function(b){if(!b)return;var c=b.cloneNode(true);b.parentNode.replaceChild(c,b);c.addEventListener('click',open)});
+addEventListener('keydown',function(e){if(e.key==='Escape')close()});
 })();</script>
 </body>
 </html>
