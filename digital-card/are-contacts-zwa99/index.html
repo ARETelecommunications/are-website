@@ -8,8 +8,8 @@
 <meta property="og:title" content="Ashley Eaton | ARE Telecommunications">
 <meta property="og:description" content="President">
 <meta name="theme-color" content="#07183A">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
-<link rel="icon" type="image/png" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" href="card-icon.png">
+<link rel="icon" type="image/png" href="card-favicon.png">
 <meta name="apple-mobile-web-app-title" content="ARE Contacts">
 <meta name="are-build" content="04207f859f">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&family=Roboto:wght@400;500&display=swap">
@@ -112,6 +112,11 @@ img.av{object-fit:cover;background:var(--surface);border:2px solid var(--blue)}
 .who small{display:block;color:var(--muted);font-size:14px}
 .person svg{flex:none;width:22px;height:22px;fill:var(--blue)}
 .soon{margin:16px 24px 26px;padding:14px;border-radius:12px;background:var(--surface);color:var(--muted);text-align:center;font-size:14px}
+.are-ptr{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top,0px));z-index:2147483001;width:44px;height:44px;margin-left:-22px;border-radius:50%;background:linear-gradient(180deg,rgba(32,64,128,.95),rgba(7,24,58,.95));border:1.5px solid rgba(70,190,255,.6);color:#fff;display:grid;place-items:center;box-shadow:0 6px 16px rgba(7,24,58,.35);pointer-events:none;opacity:0;transform:scale(.6);transition:opacity .15s,transform .15s,background .15s}
+.are-ptr svg{width:20px;height:20px}
+.are-ptr.ready{background:#1565E0;border-color:#46BEFF}
+.are-ptr.spin svg{animation:areptr .8s linear infinite}
+@keyframes areptr{to{transform:rotate(360deg)}}
 </style>
 <style>
 .are-fab{position:fixed;right:16px;z-index:2147483000;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#fff;
@@ -180,5 +185,20 @@ t.addEventListener('click',function(){scrollTo({top:0,behavior:matchMedia('(pref
 s.addEventListener('click',function(){var u=location.href.split('#')[0],h=document.querySelector('h1');var ti=(h?h.textContent.trim()+' | ':'')+'ARE';
  if(navigator.share){navigator.share({title:ti,url:u}).catch(function(){});return}
  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){say('Link copied')},function(){say(u)})}else say(u)});})();</script>
+<div class="are-ptr" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg></div>
+<script>(function(){
+/* pull down from the top to load the latest version of this card (skips the phone's saved copy) */
+var el=document.querySelector('.are-ptr'),ic=el.querySelector('svg'),y0=null,d=0;
+function fresh(){location.replace(location.pathname+'?v='+Date.now())}
+function top0(){return (window.scrollY||document.documentElement.scrollTop)<=0}
+var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+if(!standalone)return; /* in Safari/Chrome the browser's own pull-to-refresh already works */
+document.documentElement.style.overscrollBehaviorY='contain';
+function reset(){el.style.opacity='';el.style.transform='';ic.style.transform='';el.classList.remove('ready')}
+addEventListener('touchstart',function(e){if(top0()){y0=e.touches[0].clientY;d=0}else y0=null},{passive:true});
+addEventListener('touchmove',function(e){if(y0===null)return;d=e.touches[0].clientY-y0;if(d<=0){reset();return}
+ var k=Math.min(d/120,1);el.style.opacity=String(k);el.style.transform='scale('+(0.6+0.4*k)+')';ic.style.transform='rotate('+Math.round(k*300)+'deg)';el.classList.toggle('ready',d>120)},{passive:true});
+addEventListener('touchend',function(){if(y0===null)return;if(d>120){el.style.opacity='1';el.style.transform='scale(1)';ic.style.transform='';el.classList.add('spin');fresh()}else reset();y0=null;d=0},{passive:true});
+})();</script>
 </body>
 </html>
