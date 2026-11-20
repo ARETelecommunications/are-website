@@ -100,7 +100,32 @@ footer b{display:block;color:var(--bright);font-weight:400;letter-spacing:.32em;
 .need{display:inline-block;padding:1px 8px;border:1px dashed #E3A33B;border-radius:6px;color:#B9770E;font:700 12px var(--display);letter-spacing:.04em}
 a:focus-visible,button:focus-visible{outline:3px solid var(--bright);outline-offset:2px}
 </style>
-</head>
+<style>
+.are-fab{position:fixed;right:16px;z-index:2147483000;width:46px;height:46px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#fff;
+ border:1.5px solid rgba(70,190,255,.6);background:linear-gradient(180deg,rgba(32,64,128,.92),rgba(7,24,58,.92));box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px rgba(7,24,58,.35);
+ -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);overflow:hidden;-webkit-tap-highlight-color:transparent}
+.are-fab::before{content:"";position:absolute;left:0;right:0;top:0;height:50%;pointer-events:none;background:linear-gradient(180deg,rgba(255,255,255,.28),rgba(255,255,255,.04))}
+.are-fab svg{width:20px;height:20px;position:relative}
+.are-fshare{bottom:calc(76px + env(safe-area-inset-bottom))}
+.are-ftop{bottom:calc(20px + env(safe-area-inset-bottom));opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .25s,transform .25s}
+.are-ftop.on{opacity:1;transform:none;pointer-events:auto}
+.are-ftoast{position:fixed;left:50%;bottom:calc(140px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:2147483001;background:#07183A;color:#fff;padding:10px 18px;border-radius:999px;font:600 14px/1.2 Roboto,Arial,sans-serif;opacity:0;transition:opacity .25s;pointer-events:none}
+.are-ftoast.on{opacity:1}
+</style><style>
+.save,.soc,.more,.act{position:relative;overflow:hidden}
+.save,.soc{background:linear-gradient(180deg,#2E7BFF 0%,#1565E0 55%,#0D4AB4 100%)!important;border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(0,0,0,.18),0 6px 16px rgba(7,24,58,.28)}
+.more{box-shadow:inset 0 1px 0 rgba(255,255,255,.3),0 6px 16px rgba(7,24,58,.28)}
+.act{background:linear-gradient(180deg,#FFFFFF 0%,#EEF2F8 100%)!important;border:1px solid rgba(21,101,224,.18);box-shadow:inset 0 1px 0 #fff,0 6px 14px rgba(7,24,58,.12)}
+.save::before,.soc::before,.more::before,.act::before{content:"";position:absolute;left:0;right:0;top:0;height:50%;pointer-events:none;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.32),rgba(255,255,255,.04))}
+.act::before{background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(255,255,255,0))}
+.save>*,.soc>*,.more>*,.act>*{position:relative}
+</style><style>
+.share,.os button{position:relative;overflow:hidden;background:linear-gradient(180deg,#FFFFFF 0%,#EEF2F8 100%);border:1px solid rgba(21,101,224,.25)!important;box-shadow:inset 0 1px 0 #fff,0 6px 14px rgba(7,24,58,.12)}
+.os button[aria-expanded="true"]{background:linear-gradient(180deg,#2a4f8f 0%,#07183A 70%)!important;border-color:#07183A!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.35),0 6px 16px rgba(7,24,58,.3)}
+.share::before,.os button::before{content:"";position:absolute;left:0;right:0;top:0;height:50%;pointer-events:none;border-radius:inherit;background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,0))}
+.os button[aria-expanded="true"]::before{background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(255,255,255,.03))}
+.share>*,.os button>*{position:relative}
+</style></head>
 <body>
 <main class="wrap">
   <header class="hero">
@@ -204,5 +229,15 @@ document.getElementById("share").addEventListener("click", async () => {
   document.addEventListener("visibilitychange", function () { if (!document.hidden) check(); });
 })();
 </script>
-<script>document.querySelectorAll("img[data-srcdup]").forEach(function(i){var o=document.querySelector('img[data-src1="'+i.getAttribute("data-srcdup")+'"]');if(o)i.src=o.src})</script></body>
+<script>document.querySelectorAll("img[data-srcdup]").forEach(function(i){var o=document.querySelector('img[data-src1="'+i.getAttribute("data-srcdup")+'"]');if(o)i.src=o.src})</script><button type="button" class="are-fab are-fshare" aria-label="Share"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/></svg></button>
+<button type="button" class="are-fab are-ftop" aria-label="Back to top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5"/><path d="M5 12l7-7 7 7"/></svg></button>
+<div class="are-ftoast" role="status" aria-live="polite"></div>
+<script>(function(){var t=document.querySelector('.are-ftop'),s=document.querySelector('.are-fshare'),m=document.querySelector('.are-ftoast'),tt;
+function say(x){m.textContent=x;m.classList.add('on');clearTimeout(tt);tt=setTimeout(function(){m.classList.remove('on')},2200)}
+function on(){t.classList.toggle('on',(window.scrollY||document.documentElement.scrollTop)>300)}addEventListener('scroll',on,{passive:true});on();
+t.addEventListener('click',function(){scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+s.addEventListener('click',function(){var u=location.href.split('#')[0],h=document.querySelector('h1');var ti=(h?h.textContent.trim()+' | ':'')+'ARE';
+ if(navigator.share){navigator.share({title:ti,url:u}).catch(function(){});return}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(function(){say('Link copied')},function(){say(u)})}else say(u)});})();</script>
+</body>
 </html>
